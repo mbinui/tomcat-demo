@@ -9,6 +9,9 @@ node {
     stage('Maven-compile') {      
         sh "${mvnhome}/bin/mvn compile"
     }
+    stage('Maven-test') {      
+        sh "${mvnhome}/bin/mvn test"
+    }
     stage('Maven-package') {      
         sh "${mvnhome}/bin/mvn package"
     }
