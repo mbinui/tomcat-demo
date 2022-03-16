@@ -1,0 +1,20 @@
+node {
+    def mvnhome = tool name: 'Maven-home', type: 'maven'  
+    stage('scm checkout') { 
+        git branch: 'main', credentialsId: 'Git-credentials', url: 'https://github.com/mbinui/tomcat-demo.git'
+        } 
+    stage('Maven-clean') {      
+        sh "${mvnhome}/bin/mvn clean"
+	  } 
+    stage('Maven-compile') {      
+        sh "${mvnhome}/bin/mvn compile"
+    }
+    stage('Maven-package') {      
+        sh "${mvnhome}/bin/mvn package"
+    }
+    stage('Sonar-Analysis') { 
+        withSonarQubeEnv('sonarqube') {
+            sh '${mvnhome}/bin/mvn sonar:sonar'
+        }
+    }
+}
